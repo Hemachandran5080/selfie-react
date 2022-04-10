@@ -1,12 +1,10 @@
-import logo from './logo.svg';
-import './App.css';
-import Home from './components/Home/Home'
-import Footer from './components/Footer'
+import React from "react";
+import "./App.css";
+import { WebcamCapture } from "./components/Webcam/Webcam";
 function App() {
   return (
     <div className="App">
-      <Home/>
-      <Footer/>
+      <WebcamCapture />
     </div>
   );
 }

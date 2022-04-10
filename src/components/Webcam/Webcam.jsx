@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import axios from "axios";
 import Webcam from "react-webcam";
 
 
-const WebcamComponent = () => <Webcam />;
+// const WebcamComponent = () => <Webcam />;
 
 const videoConstraints = {
     width: 220,
@@ -12,16 +13,30 @@ const videoConstraints = {
 
 export const WebcamCapture = () => {
 
-    const [image,setImage]=useState('');
+    const [image, setImage] = useState('');
+    const [view, setView] = useState('');
     const webcamRef = React.useRef(null);
 
     
     const capture = React.useCallback(
         () => {
-        const imageSrc = webcamRef.current.getScreenshot();
-        setImage(imageSrc)
+            // const imageSrc = webcamRef.current.getScreenshot();
+            setImage(webcamRef.current.getScreenshot());
         });
+    
+    console.log(image);
+    
+    const viewImage = () => {
+        axios.get("http://localhost:3010/api/camera").then((response) => {
+            setView(response.data.data);
+        });
+    }
 
+    const saveImage = () => {
+        axios.post("http://localhost:3010/api/camera", {
+            cam: image
+        });
+    }
 
     return (
         <div className="webcam-container">
@@ -51,6 +66,9 @@ export const WebcamCapture = () => {
                         className="webcam-btn">Capture</button>
                 }
             </div>
+            <button onClick={viewImage}>View Image</button>
+            <button onClick={saveImage}>Save Image</button>
+            <img src={view} alt="selfie image" />
         </div>
     );
 };
